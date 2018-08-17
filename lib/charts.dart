@@ -12,6 +12,10 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     return new SimpleTimeSeriesChart(_createSampleData(), animate: false,);
   }
 
+  factory SimpleTimeSeriesChart.withSampleData2() {
+    return new SimpleTimeSeriesChart(_createSampleData2(), animate: false,);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new charts.TimeSeriesChart(seriesList, animate: animate, dateTimeFactory: const charts.LocalDateTimeFactory(),);
@@ -23,6 +27,22 @@ class SimpleTimeSeriesChart extends StatelessWidget {
       new TimeSeriesSales(new DateTime(2017, 9, 26), 25),
       new TimeSeriesSales(new DateTime(2017, 10, 3), 100),
       new TimeSeriesSales(new DateTime(2017, 10, 10), 75),
+    ];
+
+    return [
+      new charts.Series(id: 'Sales',
+          data: data,
+          // two __ or else it thinks it's the same name
+          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+          domainFn: (TimeSeriesSales sales, _) => sales.time,
+          measureFn: (TimeSeriesSales sales, _) => sales.sales)
+    ];
+  }
+
+  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData2() {
+    final data = [
+      new TimeSeriesSales(new DateTime(2018, 9, 16), 5),
+      new TimeSeriesSales(new DateTime(2018, 9, 26), 10),
     ];
 
     return [

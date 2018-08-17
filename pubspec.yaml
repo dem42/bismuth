@@ -11,6 +11,7 @@ dependencies:
   sembast: any
   path_provider: any
   charts_flutter: any
+  page_view_indicator: ^0.3.0+1
 
 dev_dependencies:
   flutter_test:

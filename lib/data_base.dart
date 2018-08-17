@@ -34,14 +34,6 @@ class BismuthDbConnection {
   }
   BismuthDbConnection(this._db);
 
-  Future<void> initHello() async {
-    await _db.put('test', 'first');
-  }
-
-  Future<String> getHello() async {
-    return await _db.get('first') as String;
-  }
-
   Future<void> putGroup(Group group) async {
     final store = _db.getStore(_GROUP_STRORE_KEY);
     await store.put(json.encode(group), group.name);
