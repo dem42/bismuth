@@ -97,10 +97,12 @@ class BismuthDbConnection {
     await store.put(json.encode(trackData), trackData.time);
   }
 
-  Future<List<TrackData>> getTrackData() async {
+  Future<List<TrackData>> getTrackData(Track track) async {
     final store = _db.getStore(_TRACK_DATA_STRORE_KEY);
     Finder finder = new Finder();
     var records = await store.findRecords(finder);
-    return records.map((record) => TrackData.fromJson(json.decode(record.value))).toList();
+    var result = records.map((record) => TrackData.fromJson(json.decode(record.value))).toList();
+    result.retainWhere((trackData) => trackData.trackName == track.name);
+    return result;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bismuth/model/track_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
@@ -16,17 +17,32 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     return new SimpleTimeSeriesChart(_createSampleData2(), animate: false,);
   }
 
+  factory SimpleTimeSeriesChart.fromData(List<TrackData> trackData) {
+    final data = trackData.map((td) => new TDSeries(DateTime.parse(td.time), td.value)).toList();
+
+    final series = [
+      new charts.Series(id: 'Data',
+          data: data,
+          // two __ or else it thinks it's the same name
+          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+          domainFn: (TDSeries sales, _) => sales.time,
+          measureFn: (TDSeries sales, _) => sales.value)
+    ];
+
+    return new SimpleTimeSeriesChart(series, animate: false,);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new charts.TimeSeriesChart(seriesList, animate: animate, dateTimeFactory: const charts.LocalDateTimeFactory(),);
   }
 
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+  static List<charts.Series<TDSeries, DateTime>> _createSampleData() {
     final data = [
-      new TimeSeriesSales(new DateTime(2017, 9, 16), 5),
-      new TimeSeriesSales(new DateTime(2017, 9, 26), 25),
-      new TimeSeriesSales(new DateTime(2017, 10, 3), 100),
-      new TimeSeriesSales(new DateTime(2017, 10, 10), 75),
+      new TDSeries(new DateTime(2017, 9, 16), 5),
+      new TDSeries(new DateTime(2017, 9, 26), 25),
+      new TDSeries(new DateTime(2017, 10, 3), 100),
+      new TDSeries(new DateTime(2017, 10, 10), 75),
     ];
 
     return [
@@ -34,15 +50,15 @@ class SimpleTimeSeriesChart extends StatelessWidget {
           data: data,
           // two __ or else it thinks it's the same name
           colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (TimeSeriesSales sales, _) => sales.time,
-          measureFn: (TimeSeriesSales sales, _) => sales.sales)
+          domainFn: (TDSeries sales, _) => sales.time,
+          measureFn: (TDSeries sales, _) => sales.value)
     ];
   }
 
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData2() {
+  static List<charts.Series<TDSeries, DateTime>> _createSampleData2() {
     final data = [
-      new TimeSeriesSales(new DateTime(2018, 9, 16), 5),
-      new TimeSeriesSales(new DateTime(2018, 9, 26), 10),
+      new TDSeries(new DateTime(2018, 9, 16), 5),
+      new TDSeries(new DateTime(2018, 9, 26), 10),
     ];
 
     return [
@@ -50,15 +66,15 @@ class SimpleTimeSeriesChart extends StatelessWidget {
           data: data,
           // two __ or else it thinks it's the same name
           colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (TimeSeriesSales sales, _) => sales.time,
-          measureFn: (TimeSeriesSales sales, _) => sales.sales)
+          domainFn: (TDSeries sales, _) => sales.time,
+          measureFn: (TDSeries sales, _) => sales.value)
     ];
   }
 }
 
-class TimeSeriesSales {
+class TDSeries {
   final DateTime time;
-  final int sales;
+  final int value;
 
-  TimeSeriesSales(this.time, this.sales);
+  TDSeries(this.time, this.value);
 }

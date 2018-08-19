@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:bismuth/model/group.dart';
 import 'package:bismuth/model/track.dart';
 import 'package:bismuth/model/track_data.dart';
+import 'package:bismuth/track_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'data_base.dart';
-import 'charts.dart';
+import 'package:bismuth/data_base.dart';
 import 'package:page_view_indicator/page_view_indicator.dart';
+import 'package:circle_indicator/circle_indicator.dart';
 
 Group g1 = new Group(name: "gunit", order: 2);
 Track t1 = new Track(name: "test2", group: g1, units: "hops");
@@ -24,104 +24,10 @@ Future<void> main() async {
 
   //debugPaintSizeEnabled = true;
 
-  runApp(new BismuthApp());
+  runApp(new BismuthApp(dbConnection));
 }
 
-typedef Widget ChartBuilder(Track track);
 typedef void Action(BuildContext context);
-
-class TrackPage extends StatelessWidget {
-  final ChartBuilder chartBuilder;
-  final Track track;
-  final List<TrackData> trackData;
-  final TextStyle headerTextStyle = new TextStyle(fontWeight: FontWeight.bold);
-
-  TrackPage({this.chartBuilder, this.track, this.trackData = const []});
-
-  @override
-  Widget build(BuildContext context) {
-    final windowSize = MediaQuery.of(context).size;
-
-    return new Container(
-      padding: const EdgeInsets.all(5.0),
-      child: new Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          new Container(child: chartBuilder(track), height: windowSize.height * 0.65, width: windowSize.width * 0.8),
-          new Expanded(
-              child: new Container(
-                  width: windowSize.width * 0.5,
-                  child: new TrackDataListView(trackData: trackData, headerTextStyle: headerTextStyle)))
-          //new Text("hello"),
-        ],
-      ),
-    );
-  }
-}
-
-class TrackDataListView extends StatelessWidget {
-  const TrackDataListView({
-    Key key,
-    @required this.trackData,
-    @required this.headerTextStyle,
-  }) : super(key: key);
-
-  final List<TrackData> trackData;
-  final TextStyle headerTextStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    return new ListView.builder(
-        itemCount: trackData.length + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return new TrackListViewHeaderRow(headerTextStyle: headerTextStyle);
-          }
-
-          final td = trackData[index - 1];
-          return new TrackListViewDataRow(td: td);
-        });
-  }
-}
-
-class TrackListViewDataRow extends StatelessWidget {
-  const TrackListViewDataRow({
-    Key key,
-    @required this.td,
-  }) : super(key: key);
-
-  final TrackData td;
-
-  @override
-  Widget build(BuildContext context) {
-    return new Row(
-      children: <Widget>[
-        new Text(td.time),
-        new Expanded(child: new Text(td.value.toString(), textAlign: TextAlign.right))
-      ],
-    );
-  }
-}
-
-class TrackListViewHeaderRow extends StatelessWidget {
-  const TrackListViewHeaderRow({
-    Key key,
-    @required this.headerTextStyle,
-  }) : super(key: key);
-
-  final TextStyle headerTextStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    return new Row(
-      children: <Widget>[
-        new Text("Date", style: headerTextStyle),
-        new Expanded(child: new Text("Value", style: headerTextStyle, textAlign: TextAlign.right))
-      ],
-    );
-  }
-}
 
 class Choice {
   const Choice({this.title, this.icon, this.action});
@@ -173,8 +79,8 @@ MaterialPageRoute<void> createSaveTrackDataRoute() {
       body: new Column(children: <Widget>[
         new Expanded(
             child: TextField(
-              decoration: InputDecoration(hintText: 'Value'),
-            ))
+          decoration: InputDecoration(hintText: 'Value'),
+        ))
       ]),
     );
   });
@@ -193,6 +99,10 @@ List<Choice> choices = <Choice>[
 ];
 
 class BismuthApp extends StatelessWidget {
+  final BismuthDbConnection dbConnection;
+
+  BismuthApp(this.dbConnection);
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -200,18 +110,44 @@ class BismuthApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new TracksPage(),
+      home: new TracksPage(dbConnection),
     );
   }
 }
 
-class TracksPage extends StatelessWidget {
+class TracksPage extends StatefulWidget {
+  final BismuthDbConnection dbConnection;
+
+  TracksPage(this.dbConnection);
+
+  @override
+  State<StatefulWidget> createState() => TracksPageState(dbConnection);
+}
+
+class TracksPageState extends State<TracksPage> {
   final ValueNotifier<int> pageIndexNotifier = ValueNotifier<int>(0);
+  final BismuthDbConnection dbConnection;
+  final PageController controller;
+
+  // mutable state
+  final List<Track> tracks = new List<Track>();
+
+  TracksPageState(this.dbConnection) {}
+
+  @override
+  void initState() {
+    dbConnection.getTracks().then((newTracks) {
+      setState(() {
+        tracks.addAll(newTracks);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false, //this prevents this widget from resizing due to software keyboard (which would cause problems)
+        resizeToAvoidBottomPadding:
+            false, //this prevents this widget from resizing due to software keyboard (which would cause problems)
         appBar: new AppBar(
           title: Text('Bismuth'),
           actions: <Widget>[
@@ -251,18 +187,15 @@ class TracksPage extends StatelessWidget {
         ),
         body: new Column(children: <Widget>[
           new Expanded(
-              child: new PageView(
+              child: new PageView.builder(
+            controller: controller,
             onPageChanged: (index) => pageIndexNotifier.value = index,
-            children: <Widget>[
-              new TrackPage(
-                chartBuilder: (track) => SimpleTimeSeriesChart.withSampleData(),
-                track: t1,
-                trackData: tds,
-              ),
-              new TrackPage(chartBuilder: (track) => SimpleTimeSeriesChart.withSampleData(), track: t1),
-            ],
+            itemCount: tracks.length,
+            itemBuilder: (context, index) {
+              return new TrackPage(track: tracks[index], dbConnection: dbConnection);
+            },
           )),
-          _createPageIndicator(pageIndexNotifier, 2)
+          //new CircleIndicator(controller, tracks.length, 3.0, Colors.white70, Colors.white)
         ]));
   }
 

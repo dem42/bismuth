@@ -12,6 +12,7 @@ dependencies:
   path_provider: any
   charts_flutter: any
   page_view_indicator: ^0.3.0+1
+  circle_indicator: ^0.0.7
 
 dev_dependencies:
   flutter_test:

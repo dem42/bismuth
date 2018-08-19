@@ -16,8 +16,8 @@ void main() {
   Track t3 = new Track(name: "test2", group: g2, units: "hops");
 
   TrackData td1 = new TrackData(track: t1, time: new DateTime(2018, 1, 1), value: 10);
-  TrackData td2 = new TrackData(track: t1, time: new DateTime(2018, 1, 1), value: 10);
-  TrackData td3 = new TrackData(track: t2, time: new DateTime(2018, 1, 1), value: 10);
+  TrackData td2 = new TrackData(track: t1, time: new DateTime(2018, 1, 2), value: 10);
+  TrackData td3 = new TrackData(track: t2, time: new DateTime(2018, 1, 3), value: 10);
 
   test("SerializationTest", () {
     String group1 = json.encode(g1);
@@ -53,7 +53,7 @@ void main() {
     await db.putTrackData(td1);
     await db.putTrackData(td2);
     await db.putTrackData(td3);
-    var trackData = await db.getTrackData();
+    var trackData = await db.getTrackData(t1);
     for (var td in trackData) {
       print(td.time);
     }

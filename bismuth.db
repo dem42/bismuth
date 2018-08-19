@@ -1,9 +1,0 @@
-{"version":1,"sembast":1}
-{"key":"testG","store":"groups","value":"{\"name\":\"testG\",\"order\":1}"}
-{"key":"gunit","store":"groups","value":"{\"name\":\"gunit\",\"order\":2}"}
-{"key":"weight","store":"tracks","value":"{\"name\":\"weight\",\"groupName\":\"testG\",\"units\":\"kg\",\"hasMovingAverage\":true,\"movingAvgDays\":10}"}
-{"key":"test","store":"tracks","value":"{\"name\":\"test\",\"groupName\":\"gunit\",\"units\":\"hops\",\"hasMovingAverage\":false,\"movingAvgDays\":0}"}
-{"key":"2018-01-01 00:00:00.000","store":"track_data","value":"{\"trackName\":\"test\",\"time\":\"2018-01-01 00:00:00.000\",\"value\":10}"}
-{"key":"2018-01-01T00:00:00.000","store":"track_data","value":"{\"trackName\":\"weight\",\"time\":\"2018-01-01T00:00:00.000\",\"value\":10}"}
-{"key":"2018-01-01T00:00:00.000","store":"track_data","value":"{\"trackName\":\"weight\",\"time\":\"2018-01-01T00:00:00.000\",\"value\":10}"}
-{"key":"2018-01-01T00:00:00.000","store":"track_data","value":"{\"trackName\":\"test\",\"time\":\"2018-01-01T00:00:00.000\",\"value\":10}"}
