@@ -14,27 +14,39 @@ class TrackPage extends StatefulWidget {
   TrackPage({this.track, this.dbConnection});
 
   @override
-  State<StatefulWidget> createState() => TrackPageState(track: track, dbConnection: dbConnection);
+  State<StatefulWidget> createState() {
+
+    return new TrackPageState(track: track, dbConnection: dbConnection);
+  }
+
+
 }
 
 class TrackPageState extends State<TrackPage> {
-  final Track track;
+
+  static const _GRAPH_HEIGHT_PROPORTION = 0.55;
+  static const _LIST_HEIGHT_PROPORTION = 0.60;
+  static const _GRAPH_WIDTH_PROPORTION = 0.80;
+
   final BismuthDbConnection dbConnection;
   final TextStyle headerTextStyle = new TextStyle(fontWeight: FontWeight.bold);
 
   // mutable state
-  final List<TrackData> trackData = new List<TrackData>();
+  final Track track;
+  //final List<TrackData> trackData = new List<TrackData>();
 
   TrackPageState({@required this.track, @required this.dbConnection});
 
-  @override
-  void initState() {
-    dbConnection.getTrackData(track).then((newTrackData) {
-      setState(() {
-        trackData.addAll(newTrackData);
-      });
-    });
-  }
+//  @override
+//  void initState() {
+//    super.initState();
+//
+//    dbConnection.getTrackData(track).then((newTrackData) {
+//      setState(() {
+//        trackData.addAll(newTrackData);
+//      });
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +55,18 @@ class TrackPageState extends State<TrackPage> {
     return new Container(
       padding: const EdgeInsets.all(5.0),
       child: new Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          new Container(child: _createChart(), height: windowSize.height * 0.65, width: windowSize.width * 0.8),
-          new Expanded(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Text("Track: ${track.name}"),
+            new Container(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: _createChart(), height: windowSize.height * _GRAPH_HEIGHT_PROPORTION,
+              width: windowSize.width * _GRAPH_WIDTH_PROPORTION),
+            new Expanded(
               child: new Container(
-                  width: windowSize.width * 0.5,
-                  child: new TrackDataListView(trackData: trackData, headerTextStyle: headerTextStyle)))
+                  width: windowSize.width * _LIST_HEIGHT_PROPORTION,
+                  child: new TrackDataListView(trackData: track.trackData, headerTextStyle: headerTextStyle)))
           //new Text("hello"),
         ],
       ),
@@ -58,11 +74,11 @@ class TrackPageState extends State<TrackPage> {
   }
 
   Widget _createChart() {
-    if (trackData.isEmpty) {
-      return const Center(child: const Text("No data available"));
+    if (track.trackData.isEmpty) {
+      return const Center(child: const Text("No data available.\nUse the + button to add data.", textAlign: TextAlign.center,));
     }
     else {
-      return SimpleTimeSeriesChart.fromData(trackData);
+      return SimpleTimeSeriesChart.fromData(track.trackData);
     }
   }
 }
@@ -79,10 +95,19 @@ class TrackDataListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    if (trackData.isEmpty) {
+      return new Container();
+    }
+
     return new ListView.builder(
-        itemCount: trackData.length + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
+        padding: const EdgeInsets.all(0.0),
+        itemCount: 2*(trackData.length + 1),
+        itemBuilder: (context, i) {
+          if (i.isOdd) return Divider();
+          final index = i ~/ 2;
+
+          if (i == 0) {
             return new TrackListViewHeaderRow(headerTextStyle: headerTextStyle);
           }
 
@@ -103,11 +128,14 @@ class TrackListViewDataRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Row(
-      children: <Widget>[
-        new Text(td.time),
-        new Expanded(child: new Text(td.value.toString(), textAlign: TextAlign.right))
-      ],
+        children: <Widget>[new Text(_formatDataTime(td.time)),
+        new Expanded(child: new Text(td.value.toString(), textAlign: TextAlign.right))],
     );
+  }
+
+  String _formatDataTime(String time) {
+    final DateTime dt = DateTime.parse(time);
+    return "${dt.year.toString()}-${dt.month.toString().padLeft(2,'0')}-${dt.day.toString().padLeft(2,'0')}";
   }
 }
 

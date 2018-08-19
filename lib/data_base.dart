@@ -83,13 +83,21 @@ class BismuthDbConnection {
   Future<void> putTrack(Track track) async {
     final store = _db.getStore(_TRACK_STRORE_KEY);
     await store.put(json.encode(track), track.name);
+    for(var td in track.trackData) {
+      await putTrackData(td);
+    }
   }
 
   Future<List<Track>> getTracks() async {
     final store = _db.getStore(_TRACK_STRORE_KEY);
     Finder finder = new Finder();
     var records = await store.findRecords(finder);
-    return records.map((record) => Track.fromJson(json.decode(record.value))).toList();
+    var tracks = records.map((record) => Track.fromJson(json.decode(record.value))).toList();
+    for (var track in tracks) {
+      final td = await getTrackData(track);
+      track.trackData.addAll(td);
+    }
+    return tracks;
   }
 
   Future<void> putTrackData(TrackData trackData) async {

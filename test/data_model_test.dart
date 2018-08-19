@@ -42,9 +42,15 @@ void main() {
     final db = await BismuthDbConnection.openConnection();
     await db.putTrack(t1);
     await db.putTrack(t2);
+    await db.putTrackData(td1);
+    await db.putTrackData(td2);
+    await db.putTrackData(td3);
     var tracks = await db.getTracks();
     for (var track in tracks) {
       print(track.name);
+      for (var td in track.trackData) {
+        print(td.value);
+      }
     }
   });
 

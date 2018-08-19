@@ -1,11 +1,13 @@
 import 'package:bismuth/model/group.dart';
+import 'package:bismuth/model/track_data.dart';
 
 class Track {
-  final String name;
+  String name;
   final String groupName;
   final String units;
   final bool hasMovingAverage;
   final int movingAvgDays;
+  final List<TrackData> trackData = new List<TrackData>();
 
   Track({this.name, Group group, this.units, this.hasMovingAverage = false, this.movingAvgDays = 0}) : groupName = group.name;
 
