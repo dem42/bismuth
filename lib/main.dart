@@ -128,14 +128,15 @@ MaterialPageRoute<void> createSaveTrackDataRoute(Track currentTrack, OnTrackData
 }
 
 enum ChoiceActionType {
-  NEW_TRACK, OTHER
+  NEW_TRACK, DELETE_TRACK, CLEAR_DB, OTHER
 }
 
 const List<Choice> choices = const <Choice>[
   const Choice(title: 'New Track', icon: Icons.playlist_add, actionType: ChoiceActionType.NEW_TRACK),
   const Choice(title: 'New Group', icon: Icons.add_shopping_cart),
-  const Choice(title: 'Delete Track', icon: Icons.remove),
+  const Choice(title: 'Delete Track', icon: Icons.remove, actionType: ChoiceActionType.DELETE_TRACK),
   const Choice(title: 'Delete Group', icon: Icons.remove_shopping_cart),
+  const Choice(title: 'Clear Database', icon: Icons.warning, actionType: ChoiceActionType.CLEAR_DB),
 ];
 
 class BismuthApp extends StatelessWidget {
@@ -167,9 +168,9 @@ class TracksPage extends StatefulWidget {
 class TracksPageState extends State<TracksPage> {
   final ValueNotifier<int> pageIndexNotifier = ValueNotifier<int>(0);
   final BismuthDbConnection dbConnection;
-  final PageController controller = new PageController();
 
   // mutable state
+  PageController controller = new PageController();
   final List<Track> tracks = new List<Track>();
   int currentTrackIndex = 0;
 
@@ -226,7 +227,7 @@ class TracksPageState extends State<TracksPage> {
         ),
         floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.add),
-          onPressed: () => _AddEntryPressed(context),
+          onPressed: () => _addEntryPressed(context),
         ),
         body: new Stack(children: <Widget>[
           _buildPageView(),
@@ -234,17 +235,16 @@ class TracksPageState extends State<TracksPage> {
               right: windowSize.width - 50,
               child: IconButton(
                 icon: const Icon(Icons.chevron_left, color: Colors.blue),
-                onPressed: () {
-                  controller.previousPage(
-                      duration: const Duration(microseconds: 100), curve: const ElasticInOutCurve());
+                onPressed: () async {
+                  await controller.previousPage(duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
                 },
               )),
           new Positioned.fill(
               left: windowSize.width - 50,
               child: IconButton(
                 icon: const Icon(Icons.chevron_right, color: Colors.blue),
-                onPressed: () {
-                  controller.nextPage(duration: const Duration(microseconds: 100), curve: const ElasticInOutCurve());
+                onPressed: () async {
+                  await controller.nextPage(duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
                 },
               )),
         ]
@@ -292,13 +292,16 @@ class TracksPageState extends State<TracksPage> {
     );
   }
 
-  void _AddEntryPressed(BuildContext context) {
+  void _addEntryPressed(BuildContext context) {
     if (tracks.isEmpty) {
       return;
     }
 
     final track = tracks[currentTrackIndex];
     Navigator.of(context).push(createSaveTrackDataRoute(track, (newTrackData) async {
+          if (!newTrackData.isValid()) {
+            return;
+          }
           await dbConnection.putTrackData(newTrackData);
           setState(() {
             tracks[currentTrackIndex].trackData.add(newTrackData);
@@ -307,17 +310,47 @@ class TracksPageState extends State<TracksPage> {
   }
 
   void _onChoice(Choice choice, BuildContext context) {
-    if (choice.actionType == ChoiceActionType.NEW_TRACK) {
-      Navigator.of(context).push(createSaveTrackRoute((newTrack) {
-        dbConnection.putTrack(newTrack);
+    switch (choice.actionType) {
+      case ChoiceActionType.NEW_TRACK:
+        Navigator.of(context).push(createSaveTrackRoute((newTrack) {
+          if (!newTrack.isValid()) {
+            return;
+          }
+          dbConnection.putTrack(newTrack);
+          setState(() {
+            tracks.add(newTrack);
+            if (tracks.length > 1) {
+              controller.jumpToPage(tracks.length - 1);
+            }
+            currentTrackIndex = tracks.length - 1;
+          });
+        }));
+        break;
+      case ChoiceActionType.DELETE_TRACK:
+        final trackToRemove = tracks[currentTrackIndex];
+        final indexRemoved = currentTrackIndex;
+        dbConnection.removeTrack(trackToRemove);
         setState(() {
-          tracks.add(newTrack);
-          // this is buggy
-          if (tracks.length > 1) {
-            controller.jumpToPage(tracks.length - 1);
+          tracks.removeAt(indexRemoved);
+          if (tracks.isEmpty) {
+            currentTrackIndex = 0;
+          }
+          else if (indexRemoved < tracks.length - 1) {
+            controller.nextPage(duration: const Duration(microseconds: 100), curve: const ElasticInOutCurve());
+          }
+          else {
+            controller.previousPage(duration: const Duration(microseconds: 100), curve: const ElasticInOutCurve());
           }
         });
-      }));
+        break;
+      case ChoiceActionType.CLEAR_DB:
+        setState(() {
+          tracks.clear();
+          dbConnection.clearDb();
+        });
+        break;
+      case ChoiceActionType.OTHER:
+        assert(false);
     }
   }
 }

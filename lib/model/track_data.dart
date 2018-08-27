@@ -18,4 +18,10 @@ class TrackData {
         'time': time,
         'value': value,
       };
+
+  bool isValid() {
+    return value != null;
+  }
+
+  String get primaryKey => "$trackName:$time";
 }

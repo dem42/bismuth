@@ -26,4 +26,8 @@ class Track {
         'hasMovingAverage': hasMovingAverage,
         'movingAvgDays': movingAvgDays,
       };
+
+  bool isValid() {
+    return name != null && name.isNotEmpty;
+  }
 }

@@ -73,6 +73,10 @@ class BismuthDbConnection {
     await store.put(json.encode(group), group.name);
   }
 
+  Future<void> removeGroup(Group group) async {
+    return;
+  }
+
   Future<List<Group>> getGroups() async {
     final store = _db.getStore(_GROUP_STRORE_KEY);
     Finder finder = new Finder();
@@ -85,6 +89,14 @@ class BismuthDbConnection {
     await store.put(json.encode(track), track.name);
     for(var td in track.trackData) {
       await putTrackData(td);
+    }
+  }
+
+  Future<void> removeTrack(Track track) async {
+    final store = _db.getStore(_TRACK_STRORE_KEY);
+    await store.delete(track.name);
+    for(var td in track.trackData) {
+      await removeTrackData(td);
     }
   }
 
@@ -102,7 +114,12 @@ class BismuthDbConnection {
 
   Future<void> putTrackData(TrackData trackData) async {
     final store = _db.getStore(_TRACK_DATA_STRORE_KEY);
-    await store.put(json.encode(trackData), trackData.time);
+    await store.put(json.encode(trackData), trackData.primaryKey);
+  }
+
+  Future<void> removeTrackData(TrackData trackData) async {
+    final store = _db.getStore(_TRACK_DATA_STRORE_KEY);
+    await store.delete(trackData.primaryKey);
   }
 
   Future<List<TrackData>> getTrackData(Track track) async {
@@ -112,5 +129,14 @@ class BismuthDbConnection {
     var result = records.map((record) => TrackData.fromJson(json.decode(record.value))).toList();
     result.retainWhere((trackData) => trackData.trackName == track.name);
     return result;
+  }
+
+  Future<void> clearDb() async {
+    final storeTd = _db.getStore(_TRACK_DATA_STRORE_KEY);
+    await storeTd.clear();
+    final storeTracks = _db.getStore(_TRACK_STRORE_KEY);
+    await storeTracks.clear();
+    final storeGroup = _db.getStore(_GROUP_STRORE_KEY);
+    await storeGroup.clear();
   }
 }
