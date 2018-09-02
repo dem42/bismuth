@@ -127,9 +127,7 @@ MaterialPageRoute<void> createSaveTrackDataRoute(Track currentTrack, OnTrackData
   });
 }
 
-enum ChoiceActionType {
-  NEW_TRACK, DELETE_TRACK, CLEAR_DB, OTHER
-}
+enum ChoiceActionType { NEW_TRACK, DELETE_TRACK, CLEAR_DB, OTHER }
 
 const List<Choice> choices = const <Choice>[
   const Choice(title: 'New Track', icon: Icons.playlist_add, actionType: ChoiceActionType.NEW_TRACK),
@@ -168,9 +166,9 @@ class TracksPage extends StatefulWidget {
 class TracksPageState extends State<TracksPage> {
   final ValueNotifier<int> pageIndexNotifier = ValueNotifier<int>(0);
   final BismuthDbConnection dbConnection;
+  final PageController controller = new PageController(keepPage: false);
 
   // mutable state
-  PageController controller = new PageController();
   final List<Track> tracks = new List<Track>();
   int currentTrackIndex = 0;
 
@@ -236,7 +234,8 @@ class TracksPageState extends State<TracksPage> {
               child: IconButton(
                 icon: const Icon(Icons.chevron_left, color: Colors.blue),
                 onPressed: () async {
-                  await controller.previousPage(duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
+                  await controller.previousPage(
+                      duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
                 },
               )),
           new Positioned.fill(
@@ -244,7 +243,8 @@ class TracksPageState extends State<TracksPage> {
               child: IconButton(
                 icon: const Icon(Icons.chevron_right, color: Colors.blue),
                 onPressed: () async {
-                  await controller.nextPage(duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
+                  await controller.nextPage(
+                      duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
                 },
               )),
         ]
@@ -267,7 +267,9 @@ class TracksPageState extends State<TracksPage> {
         pageIndexNotifier.value = index;
       },
       itemCount: tracks.length,
-      itemBuilder: (context, index) => new TrackPage(track: tracks[index], dbConnection: dbConnection),
+      itemBuilder: (context, index) {
+        return new TrackPage(track: tracks[index], dbConnection: dbConnection);
+      },
     );
   }
 
@@ -298,18 +300,18 @@ class TracksPageState extends State<TracksPage> {
     }
 
     final track = tracks[currentTrackIndex];
-    Navigator.of(context).push(createSaveTrackDataRoute(track, (newTrackData) async {
+    Navigator.of(context).push(createSaveTrackDataRoute(track, (newTrackData) {
           if (!newTrackData.isValid()) {
             return;
           }
-          await dbConnection.putTrackData(newTrackData);
+          dbConnection.putTrackData(newTrackData);
           setState(() {
             tracks[currentTrackIndex].trackData.add(newTrackData);
           });
         }));
   }
 
-  void _onChoice(Choice choice, BuildContext context) {
+  void _onChoice(Choice choice, BuildContext context) async {
     switch (choice.actionType) {
       case ChoiceActionType.NEW_TRACK:
         Navigator.of(context).push(createSaveTrackRoute((newTrack) {
@@ -327,19 +329,33 @@ class TracksPageState extends State<TracksPage> {
         }));
         break;
       case ChoiceActionType.DELETE_TRACK:
+        if (tracks.isEmpty) {
+          return;
+        }
         final trackToRemove = tracks[currentTrackIndex];
         final indexRemoved = currentTrackIndex;
+        if (tracks.length > 1) {
+          if (currentTrackIndex > 0)
+            await controller.previousPage(
+                duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
+          else if (tracks.length == 2)
+            await controller.nextPage(duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
+          else {
+            // haha nice code flutter
+            controller.jumpToPage(indexRemoved+1);
+            await controller.previousPage(duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
+          }
+        }
         dbConnection.removeTrack(trackToRemove);
+
         setState(() {
           tracks.removeAt(indexRemoved);
           if (tracks.isEmpty) {
             currentTrackIndex = 0;
-          }
-          else if (indexRemoved < tracks.length - 1) {
-            controller.nextPage(duration: const Duration(microseconds: 100), curve: const ElasticInOutCurve());
-          }
-          else {
-            controller.previousPage(duration: const Duration(microseconds: 100), curve: const ElasticInOutCurve());
+          } else if (indexRemoved > 0) {
+            currentTrackIndex = indexRemoved - 1;
+          } else {
+            currentTrackIndex = indexRemoved;
           }
         });
         break;
