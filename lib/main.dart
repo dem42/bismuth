@@ -10,13 +10,6 @@ import 'package:bismuth/data_base.dart';
 import 'package:page_view_indicator/page_view_indicator.dart';
 import 'package:circle_indicator/circle_indicator.dart';
 
-Group g1 = new Group(name: "gunit", order: 2);
-Track t1 = new Track(name: "test2", group: g1, units: "hops");
-List<TrackData> tds = [
-  new TrackData(track: t1, time: new DateTime(2018, 1, 1), value: 10),
-  new TrackData(track: t1, time: new DateTime(2018, 1, 15), value: 10)
-];
-
 Future<void> main() async {
   final dbConnection = await BismuthDbConnection.openConnection();
 
