@@ -30,6 +30,7 @@ class NewTrackDataPageState extends State<NewTrackDataPage> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return new Scaffold(
       appBar: new AppBar(title: const Text("Track Data Entry")),
       floatingActionButton: new FloatingActionButton(
@@ -41,7 +42,7 @@ class NewTrackDataPageState extends State<NewTrackDataPage> {
           Navigator.of(context).pop();
         },
       ),
-      body: new Container(padding: const EdgeInsets.all(80.0), child: new Column(children: <Widget>[
+      body: new Container(padding: EdgeInsets.all(size.height / 10), child: new Column(children: <Widget>[
         new Expanded(
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),

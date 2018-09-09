@@ -13,6 +13,7 @@ class NewGroupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return new Scaffold(
       appBar: new AppBar(title: const Text("New Group")),
       floatingActionButton: new FloatingActionButton(
@@ -23,7 +24,7 @@ class NewGroupPage extends StatelessWidget {
           Navigator.of(context).pop();
         },
       ),
-      body: new Container(padding: const EdgeInsets.all(80.0), child: new Column(children: <Widget>[
+      body: new Container(padding: EdgeInsets.all(size.height / 10), child: new Column(children: <Widget>[
         new Expanded(
             child: TextField(
               decoration: InputDecoration(hintText: 'Name'),

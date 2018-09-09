@@ -97,6 +97,7 @@ class TracksPageState extends State<TracksSwipePage> {
               child: IconButton(
                 icon: const Icon(Icons.chevron_left, color: Colors.blue),
                 onPressed: () async {
+                  if (currentTrackIndex <= 0) return;
                   await controller.previousPage(
                       duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
                 },
@@ -106,6 +107,7 @@ class TracksPageState extends State<TracksSwipePage> {
               child: IconButton(
                 icon: const Icon(Icons.chevron_right, color: Colors.blue),
                 onPressed: () async {
+                  if (currentTrackIndex >= tracks.length) return;
                   await controller.nextPage(
                       duration: const Duration(microseconds: 200), curve: const ElasticInOutCurve());
                 },

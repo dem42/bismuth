@@ -27,6 +27,7 @@ class NewTrackPageState extends State<NewTrackPage> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return new Scaffold(
       appBar: new AppBar(title: const Text("New Track")),
       floatingActionButton: new FloatingActionButton(
@@ -37,19 +38,19 @@ class NewTrackPageState extends State<NewTrackPage> {
           Navigator.of(context).pop();
         },
       ),
-      body: new Container(padding: const EdgeInsets.all(80.0), child: new Column(children: <Widget>[
-        new Container(padding: const EdgeInsets.only(bottom: 80.0), child: TextField(
+      body: new Container(padding: EdgeInsets.all(size.height / 10), child: new Column(children: <Widget>[
+        new Container(padding: EdgeInsets.only(bottom: size.height / 10), child: TextField(
           decoration: InputDecoration(hintText: 'Name'),
           onChanged: (newName) => newTrack.name = newName,
         )),
         Row(children: <Widget>[
           new Container(child: const Text("Group:"), margin: const EdgeInsets.only(right: 5.0),),
-          DropdownButton<String>(
+          new DropdownButton<String>(
             value: newTrack.groupName,
             items: groups.map((Group value) {
               return new DropdownMenuItem<String>(
                 value: value.name,
-                child: new Container(width: 200.0, child: new Text(value.name, textAlign: TextAlign.center,)),
+                child: new Container(width: size.width / 3, child: new Text(value.name, textAlign: TextAlign.center,)),
               );
             }).toList(),
             onChanged: (groupName) {
