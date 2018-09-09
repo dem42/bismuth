@@ -81,7 +81,9 @@ class BismuthDbConnection {
     final store = _db.getStore(_GROUP_STRORE_KEY);
     Finder finder = new Finder();
     var records = await store.findRecords(finder);
-    return records.map((record) => Group.fromJson(json.decode(record.value))).toList();
+    var allGroups = records.map((record) => Group.fromJson(json.decode(record.value))).toList();
+    allGroups.insert(0, Group.DEFAULT_GROUP);
+    return allGroups;
   }
 
   Future<void> putTrack(Track track) async {
@@ -100,12 +102,17 @@ class BismuthDbConnection {
     }
   }
 
-  Future<List<Track>> getTracks() async {
+  Future<List<Track>> getTracks({List<Group> groups}) async {
+    if (groups == null || groups.isEmpty) {
+      groups = await getGroups();
+    }
     final store = _db.getStore(_TRACK_STRORE_KEY);
     Finder finder = new Finder();
     var records = await store.findRecords(finder);
     var tracks = records.map((record) => Track.fromJson(json.decode(record.value))).toList();
     for (var track in tracks) {
+      var dumbCompiler = (Group g) {return g.name == track.groupName;};
+      track.group = groups.where(dumbCompiler).first;
       final td = await getTrackData(track);
       track.trackData.addAll(td);
     }

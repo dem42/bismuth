@@ -1,6 +1,8 @@
 class Group {
-  final String name;
-  final int order;
+  String name;
+  int order;
+
+  static Group DEFAULT_GROUP = new Group(name: "default", order: 1);
 
   Group({this.name, this.order});
 
@@ -13,4 +15,6 @@ class Group {
         'name': name,
         'order': order,
       };
+
+  bool isValid() => name != null && name.isNotEmpty;
 }

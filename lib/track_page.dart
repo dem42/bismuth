@@ -1,8 +1,10 @@
 import 'package:bismuth/charts.dart';
 import 'package:bismuth/data_base.dart';
+import 'package:bismuth/model/group.dart';
 import 'package:bismuth/model/track.dart';
 import 'package:bismuth/model/track_data.dart';
 import 'package:flutter/material.dart';
+import 'package:bismuth/hsluv/hsluv.dart';
 
 typedef Widget ChartBuilder(Track track);
 
@@ -48,12 +50,13 @@ class TrackPageState extends State<TrackPage> {
     final windowSize = MediaQuery.of(context).size;
 
     return new Container(
+      color: _colorFromGroup(track.group),
       padding: const EdgeInsets.all(5.0),
       child: new Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new Text("Track: ${track.name}"),
+          new Text("Track: ${track.name}, Group: ${track.group.name}"),
           new Container(
               padding: const EdgeInsets.only(bottom: 10.0),
               child: _createChart(),
@@ -90,6 +93,12 @@ class TrackPageState extends State<TrackPage> {
       track.trackData.remove(trackData);
     });
     dbConnection.removeTrackData(trackData);
+  }
+
+  _colorFromGroup(Group group) {
+    var offset = (group.order * 40) % 320;
+    var rgb = HUSLColorConverter.hsluvToRgb([offset, 100, 87.6]);
+    return Color.fromARGB(60, (255 * rgb[0]).round(), (255 * rgb[1]).round(), (255 * rgb[2]).round());
   }
 }
 

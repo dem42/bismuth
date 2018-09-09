@@ -40,6 +40,8 @@ void main() {
 
   test("Data storage and retrieval of tracks", () async {
     final db = await BismuthDbConnection.openConnection();
+    await db.putGroup(g1);
+    await db.putGroup(g2);
     await db.putTrack(t1);
     await db.putTrack(t2);
     await db.putTrackData(td1);
