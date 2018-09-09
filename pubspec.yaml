@@ -17,7 +17,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.6.1"
+  flutter_launcher_icons: 0.6.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -60,3 +60,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+
+# starting from the flutter console cd to this dir and run
+# flutter pub get
+# flutter pub pub run flutter_launcher_icons:main
+# icon color is f3215d (magenta)
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "gimp/arrow_color2.png"

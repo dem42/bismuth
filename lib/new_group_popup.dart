@@ -23,13 +23,13 @@ class NewGroupPage extends StatelessWidget {
           Navigator.of(context).pop();
         },
       ),
-      body: new Column(children: <Widget>[
+      body: new Container(padding: const EdgeInsets.all(80.0), child: new Column(children: <Widget>[
         new Expanded(
             child: TextField(
               decoration: InputDecoration(hintText: 'Name'),
               onChanged: (newName) => newGroup.name = newName,
             ))
-      ]),
+      ])),
     );
   }
 }

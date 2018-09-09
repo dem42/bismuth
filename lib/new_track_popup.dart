@@ -37,11 +37,11 @@ class NewTrackPageState extends State<NewTrackPage> {
           Navigator.of(context).pop();
         },
       ),
-      body: new Column(children: <Widget>[
-        TextField(
+      body: new Container(padding: const EdgeInsets.all(80.0), child: new Column(children: <Widget>[
+        new Container(padding: const EdgeInsets.only(bottom: 80.0), child: TextField(
           decoration: InputDecoration(hintText: 'Name'),
           onChanged: (newName) => newTrack.name = newName,
-        ),
+        )),
         Row(children: <Widget>[
           new Container(child: const Text("Group:"), margin: const EdgeInsets.only(right: 5.0),),
           DropdownButton<String>(
@@ -62,7 +62,7 @@ class NewTrackPageState extends State<NewTrackPage> {
             },
           ),
         ])
-      ]),
+      ])),
     );
   }
 }

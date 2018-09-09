@@ -40,6 +40,7 @@ class TracksPageState extends State<TracksSwipePage> {
       dbConnection.getTracks(groups: newGroups).then((newTracks) {
           setState(() {
             tracks.addAll(newTracks);
+            tracks.sort(Track.SORTER);
             groups.addAll(newGroups);
             groups.sort((g1, g2) => g1.order - g2.order);
           });
@@ -55,7 +56,7 @@ class TracksPageState extends State<TracksSwipePage> {
         resizeToAvoidBottomPadding:
         false, //this prevents this widget from resizing due to software keyboard (which would cause problems)
         appBar: new AppBar(
-          title: Text("Bismuth"),
+          title: Text("Git Gud"),
           actions: <Widget>[
             // action button
             IconButton(
@@ -238,10 +239,12 @@ class TracksPageState extends State<TracksSwipePage> {
       dbConnection.putTrack(newTrack);
       setState(() {
         tracks.add(newTrack);
+        tracks.sort(Track.SORTER);
+        var newIdx = tracks.indexOf(newTrack);
         if (tracks.length > 1) {
-          controller.jumpToPage(tracks.length - 1);
+          controller.jumpToPage(newIdx);
         }
-        currentTrackIndex = tracks.length - 1;
+        currentTrackIndex = newIdx;
       });
     }));
   }

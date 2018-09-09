@@ -22,7 +22,7 @@ class BismuthApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Bismuth',
+      title: 'Git Gud',
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),

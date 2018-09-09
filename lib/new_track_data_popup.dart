@@ -41,14 +41,14 @@ class NewTrackDataPageState extends State<NewTrackDataPage> {
           Navigator.of(context).pop();
         },
       ),
-      body: new Column(children: <Widget>[
+      body: new Container(padding: const EdgeInsets.all(80.0), child: new Column(children: <Widget>[
         new Expanded(
             child: TextField(
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(hintText: 'Value'),
               onChanged: (data) => newTrackData.value = double.parse(data),
             ))
-      ]),
+      ])),
     );
   }
 }

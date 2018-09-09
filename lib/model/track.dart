@@ -11,6 +11,11 @@ class Track {
   final List<TrackData> trackData = new List<TrackData>();
   final int timestamp;
 
+  static int Function(Track a, Track b) SORTER = (a, b) {
+    if (a.group.order != b.group.order) return a.group.order.compareTo(b.group.order);
+    return a.timestamp.compareTo(b.timestamp);
+  };
+
   set group(Group group) {
     this._group = group;
     this.groupName = group.name;
