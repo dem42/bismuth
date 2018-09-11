@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'package:bismuth/model/group.dart';
+import 'package:bismuth/model/indicator_settings.dart';
 import 'package:bismuth/model/track.dart';
 import 'package:bismuth/model/track_data.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,6 +27,8 @@ class BismuthDbConnection {
   static const String _GROUP_STRORE_KEY = "groups";
   static const String _TRACK_STRORE_KEY = "tracks";
   static const String _TRACK_DATA_STRORE_KEY = "track_data";
+  static const String _INDICATOR_STRORE_KEY = "indicator_data";
+  static const String _INDICATOR_KEY = "graph_indicator";
 
   static Future<BismuthDbConnection> openConnection() async {
     DatabaseFactory dbFactory = databaseFactoryIo;
@@ -41,7 +44,7 @@ class BismuthDbConnection {
     await putGroup(g1);
     await putGroup(g2);
 
-    Track t1 = new Track(name: "weight", group: g1, units: "kg", hasMovingAverage: true, movingAvgDays: 10);
+    Track t1 = new Track(name: "weight", group: g1, units: "kg");
     Track t2 = new Track(name: "test", group: g2, units: "hops");
     Track t3 = new Track(name: "test2", group: g2, units: "hops");
 
@@ -145,5 +148,21 @@ class BismuthDbConnection {
     await storeTracks.clear();
     final storeGroup = _db.getStore(_GROUP_STRORE_KEY);
     await storeGroup.clear();
+    final indicatorGroup = _db.getStore(_INDICATOR_STRORE_KEY);
+    await indicatorGroup.clear();
+  }
+
+  Future<void> updateIndicator(IndicatorSettings settings) async {
+    final store = _db.getStore(_INDICATOR_STRORE_KEY);
+    await store.put(json.encode(settings), _INDICATOR_KEY);
+  }
+
+  Future<IndicatorSettings> getIndicator() async {
+    final store = _db.getStore(_INDICATOR_STRORE_KEY);
+    var indicator = IndicatorSettings.fromJson(await store.get(_INDICATOR_KEY) as Map<String, dynamic>);
+    if (indicator == null) {
+      indicator = new IndicatorSettings();
+    }
+    return indicator;
   }
 }

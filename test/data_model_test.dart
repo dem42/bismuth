@@ -11,7 +11,7 @@ void main() {
   Group g1 = new Group(name: "testG", order: 1);
   Group g2 = new Group(name: "gunit", order: 2);
 
-  Track t1 = new Track(name: "weight", group: g1, units: "kg", hasMovingAverage: true, movingAvgDays: 10);
+  Track t1 = new Track(name: "weight", group: g1, units: "kg");
   Track t2 = new Track(name: "test", group: g2, units: "hops");
   Track t3 = new Track(name: "test2", group: g2, units: "hops");
 

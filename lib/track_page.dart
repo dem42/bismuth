@@ -1,6 +1,7 @@
 import 'package:bismuth/charts.dart';
 import 'package:bismuth/data_base.dart';
 import 'package:bismuth/model/group.dart';
+import 'package:bismuth/model/indicator_settings.dart';
 import 'package:bismuth/model/track.dart';
 import 'package:bismuth/model/track_data.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +9,27 @@ import 'package:bismuth/hsluv/hsluv.dart';
 
 typedef Widget ChartBuilder(Track track);
 
+class TrackRefresher {
+  List<TrackPageState> pages = new List<TrackPageState>();
+
+  void refreshPages(IndicatorSettings indicatorSettings) {
+    for (TrackPageState page in pages) {
+      page.updateSettings(indicatorSettings);
+    }
+  }
+}
+
 class TrackPage extends StatefulWidget {
   final Track track;
+  final IndicatorSettings indicatorSettings;
   final BismuthDbConnection dbConnection;
+  final TrackRefresher refresher;
 
-  TrackPage({this.track, this.dbConnection});
+  TrackPage({@required this.track, @required this.dbConnection, @required this.indicatorSettings, @required this.refresher});
 
   @override
   State<StatefulWidget> createState() {
-    return new TrackPageState(track: track, dbConnection: dbConnection);
+    return new TrackPageState(track: track, dbConnection: dbConnection, indicatorSettings: indicatorSettings, refresher: refresher);
   }
 }
 
@@ -27,23 +40,15 @@ class TrackPageState extends State<TrackPage> {
 
   final BismuthDbConnection dbConnection;
   final TextStyle headerTextStyle = new TextStyle(fontWeight: FontWeight.bold);
+  final TrackRefresher refresher;
 
   // mutable state
   final Track track;
-  //final List<TrackData> trackData = new List<TrackData>();
+  IndicatorSettings indicatorSettings;
 
-  TrackPageState({@required this.track, @required this.dbConnection});
-
-//  @override
-//  void initState() {
-//    super.initState();
-//
-//    dbConnection.getTrackData(track).then((newTrackData) {
-//      setState(() {
-//        trackData.addAll(newTrackData);
-//      });
-//    });
-//  }
+  TrackPageState({@required this.track, @required this.dbConnection, @required this.indicatorSettings, @required this.refresher}) {
+    this.refresher.pages.add(this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +75,15 @@ class TrackPageState extends State<TrackPage> {
                     headerTextStyle: headerTextStyle,
                     onDelete: _deleteTrackData,
                   )))
-          //new Text("hello"),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    refresher.pages.remove(this);
   }
 
   Widget _createChart() {
@@ -84,7 +94,7 @@ class TrackPageState extends State<TrackPage> {
         textAlign: TextAlign.center,
       ));
     } else {
-      return SimpleTimeSeriesChart.fromData(track.trackData);
+      return SimpleTimeSeriesChart.fromData(track.trackData, indicatorSettings: indicatorSettings);
     }
   }
 
@@ -99,6 +109,12 @@ class TrackPageState extends State<TrackPage> {
     var offset = (group.order * 40) % 320;
     var rgb = HUSLColorConverter.hsluvToRgb([offset, 100, 87.6]);
     return Color.fromARGB(60, (255 * rgb[0]).round(), (255 * rgb[1]).round(), (255 * rgb[2]).round());
+  }
+
+  void updateSettings(IndicatorSettings indicatorSettings) {
+    setState(() {
+      this.indicatorSettings = indicatorSettings;
+    });
   }
 }
 

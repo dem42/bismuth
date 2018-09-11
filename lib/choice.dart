@@ -8,11 +8,12 @@ class Choice {
   final ChoiceActionType actionType;
 }
 
-enum ChoiceActionType { NEW_TRACK, DELETE_TRACK, CLEAR_DB, NEW_GROUP, DELETE_GROUP, OTHER }
+enum ChoiceActionType { NEW_TRACK, DELETE_TRACK, CLEAR_DB, NEW_GROUP, DELETE_GROUP, INDICATOR_SETTINGS, OTHER }
 
 const List<Choice> choices = const <Choice>[
   const Choice(title: 'New Track', icon: Icons.playlist_add, actionType: ChoiceActionType.NEW_TRACK),
   const Choice(title: 'New Group', icon: Icons.add_shopping_cart, actionType: ChoiceActionType.NEW_GROUP),
+  const Choice(title: 'Indicator', icon: Icons.show_chart, actionType: ChoiceActionType.INDICATOR_SETTINGS),
   const Choice(title: 'Delete Track', icon: Icons.remove, actionType: ChoiceActionType.DELETE_TRACK),
   const Choice(title: 'Delete Group', icon: Icons.remove_shopping_cart, actionType: ChoiceActionType.DELETE_GROUP),
   const Choice(title: 'Clear Database', icon: Icons.warning, actionType: ChoiceActionType.CLEAR_DB),

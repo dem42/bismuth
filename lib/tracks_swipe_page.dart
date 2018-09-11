@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:bismuth/choice.dart';
 import 'package:bismuth/data_base.dart';
+import 'package:bismuth/indicator_settings_popup.dart';
 import 'package:bismuth/model/group.dart';
+import 'package:bismuth/model/indicator_settings.dart';
 import 'package:bismuth/model/track.dart';
 import 'package:bismuth/new_group_popup.dart';
 import 'package:bismuth/new_track_data_popup.dart';
@@ -24,13 +26,15 @@ class TracksPageState extends State<TracksSwipePage> {
   final ValueNotifier<int> pageIndexNotifier = ValueNotifier<int>(0);
   final BismuthDbConnection dbConnection;
   final PageController controller = new PageController(keepPage: false);
+  final TrackRefresher trackRefresher = new TrackRefresher();
 
   // mutable state
   final List<Track> tracks = new List<Track>();
   final List<Group> groups = new List<Group>();
+  IndicatorSettings indicatorSettings;
   int currentTrackIndex = 0;
 
-  TracksPageState(this.dbConnection) {}
+  TracksPageState(this.dbConnection);
 
   @override
   void initState() {
@@ -45,6 +49,12 @@ class TracksPageState extends State<TracksSwipePage> {
             groups.sort((g1, g2) => g1.order - g2.order);
           });
         });
+    });
+
+    dbConnection.getIndicator().then((newIndicatorSettings) {
+      setState(() {
+        indicatorSettings = newIndicatorSettings;
+      });
     });
   }
 
@@ -72,11 +82,17 @@ class TracksPageState extends State<TracksSwipePage> {
                 _onChoice(choices[1], context);
               },
             ),
+            IconButton(
+              icon: Icon(choices[2].icon),
+              onPressed: () {
+                _onChoice(choices[2], context);
+              },
+            ),
             // overflow menu
             PopupMenuButton<Choice>(
               onSelected: (choice) => _onChoice(choice, context),
               itemBuilder: (BuildContext context) {
-                return choices.skip(2).map((Choice choice) {
+                return choices.skip(3).map((Choice choice) {
                   return PopupMenuItem<Choice>(
                     value: choice,
                     child: Text(choice.title),
@@ -133,7 +149,7 @@ class TracksPageState extends State<TracksSwipePage> {
       },
       itemCount: tracks.length,
       itemBuilder: (context, index) {
-        return new TrackPage(track: tracks[index], dbConnection: dbConnection);
+        return new TrackPage(track: tracks[index], dbConnection: dbConnection, indicatorSettings: indicatorSettings, refresher: trackRefresher,);
       },
     );
   }
@@ -199,6 +215,9 @@ class TracksPageState extends State<TracksSwipePage> {
         break;
       case ChoiceActionType.DELETE_GROUP:
         break;
+      case ChoiceActionType.INDICATOR_SETTINGS:
+        _onIndicatorSettingsAction();
+        break;
       case ChoiceActionType.OTHER:
         assert(false);
     }
@@ -260,6 +279,19 @@ class TracksPageState extends State<TracksSwipePage> {
       dbConnection.putGroup(newGroup);
       setState(() {
         groups.add(newGroup);
+      });
+    }));
+  }
+
+  void _onIndicatorSettingsAction() {
+    Navigator.of(context).push(createIndicatorSettingsRoute(indicatorSettings, (newIndicatorSettings) {
+      if (!newIndicatorSettings.isValid()) {
+        return;
+      }
+      dbConnection.updateIndicator(newIndicatorSettings);
+      setState(() {
+        indicatorSettings = newIndicatorSettings;
+        trackRefresher.refreshPages(indicatorSettings);
       });
     }));
   }

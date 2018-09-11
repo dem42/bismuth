@@ -1,3 +1,6 @@
+import 'dart:collection';
+
+import 'package:bismuth/model/indicator_settings.dart';
 import 'package:bismuth/model/track_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
@@ -15,7 +18,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     );
   }
 
-  factory SimpleTimeSeriesChart.fromData(List<TrackData> trackData) {
+  factory SimpleTimeSeriesChart.fromData(List<TrackData> trackData, {IndicatorSettings indicatorSettings}) {
     final data = trackData.map((td) => new TDSeries(DateTime.parse(td.time), td.value)).toList();
 
     final series = [
@@ -27,6 +30,19 @@ class SimpleTimeSeriesChart extends StatelessWidget {
           domainFn: (TDSeries sales, _) => sales.time,
           measureFn: (TDSeries sales, _) => sales.value)
     ];
+
+    if (indicatorSettings?.showMovingAvg ?? false) {
+      final dataForMvAvg = _computeMovingAvgSeries(data, indicatorSettings.movingAvgDays);
+      final dashedPattern = List.generate(dataForMvAvg.length, (_) => 2);
+      series.add(new charts.Series(
+          id: "mavg_${indicatorSettings.movingAvgDays}_day",
+          data: dataForMvAvg,
+          // two __ or else it thinks it's the same name
+          dashPatternFn: (_, __) => dashedPattern,
+          colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+          domainFn: (TDSeries sales, _) => sales.time,
+          measureFn: (TDSeries sales, _) => sales.value));
+    }
 
     return new SimpleTimeSeriesChart(
       series,
@@ -62,6 +78,22 @@ class SimpleTimeSeriesChart extends StatelessWidget {
           measureFn: (TDSeries sales, _) => sales.value)
     ];
   }
+}
+
+List<TDSeries> _computeMovingAvgSeries(List<TDSeries> data, int movingAvgDays) {
+  num sum = 0;
+  List<TDSeries> newData = new List<TDSeries>();
+  Queue<TDSeries> window = new Queue<TDSeries>();
+  for (TDSeries sEnt in data) {
+    while (window.isNotEmpty && sEnt.time.difference(window.first.time).inDays > movingAvgDays) {
+      sum = sum - window.first.value;
+      window.removeFirst();
+    }
+    sum += sEnt.value;
+    window.add(sEnt);
+    newData.add(new TDSeries(sEnt.time, sum / window.length));
+  }
+  return newData;
 }
 
 class TDSeries {

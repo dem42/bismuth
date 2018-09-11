@@ -6,8 +6,6 @@ class Track {
   String groupName;
   Group _group;
   final String units;
-  final bool hasMovingAverage;
-  final int movingAvgDays;
   final List<TrackData> trackData = new List<TrackData>();
   final int timestamp;
 
@@ -22,7 +20,7 @@ class Track {
   }
   Group get group => _group;
 
-  Track({this.name, Group group, this.units, this.hasMovingAverage = false, this.movingAvgDays = 0, this.timestamp}) {
+  Track({this.name, Group group, this.units, this.timestamp}) {
     if (group != null) {
       this.group = group;
     }
@@ -32,8 +30,6 @@ class Track {
       : name = json['name'],
         groupName = json['groupName'],
         units = json['units'],
-        hasMovingAverage = json['hasMovingAverage'],
-        movingAvgDays = json['movingAvgDays'],
         timestamp = json['timestamp'];
 
   Map<String, dynamic> toJson() =>
@@ -41,8 +37,6 @@ class Track {
         'name': name,
         'groupName': groupName,
         'units': units,
-        'hasMovingAverage': hasMovingAverage,
-        'movingAvgDays': movingAvgDays,
         'timestamp': timestamp,
       };
 
