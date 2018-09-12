@@ -159,10 +159,10 @@ class BismuthDbConnection {
 
   Future<IndicatorSettings> getIndicator() async {
     final store = _db.getStore(_INDICATOR_STRORE_KEY);
-    var indicator = IndicatorSettings.fromJson(json.decode(await store.get(_INDICATOR_KEY)) as Map<String, dynamic>);
-    if (indicator == null) {
-      indicator = new IndicatorSettings();
+    var jsonIndi = await store.get(_INDICATOR_KEY);
+    if (jsonIndi == null) {
+      return new IndicatorSettings();
     }
-    return indicator;
+    return IndicatorSettings.fromJson(json.decode(jsonIndi) as Map<String, dynamic>);
   }
 }
