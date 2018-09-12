@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="88a612a4-0bf4-4f4a-b5c7-bfa86164ee68" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/lib/indicator_settings_popup.dart" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/lib/model/indicator_settings.dart" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/lib/charts.dart" afterPath="$PROJECT_DIR$/lib/charts.dart" />
-      <change beforePath="$PROJECT_DIR$/lib/choice.dart" afterPath="$PROJECT_DIR$/lib/choice.dart" />
       <change beforePath="$PROJECT_DIR$/lib/data_base.dart" afterPath="$PROJECT_DIR$/lib/data_base.dart" />
-      <change beforePath="$PROJECT_DIR$/lib/model/track.dart" afterPath="$PROJECT_DIR$/lib/model/track.dart" />
-      <change beforePath="$PROJECT_DIR$/lib/track_page.dart" afterPath="$PROJECT_DIR$/lib/track_page.dart" />
-      <change beforePath="$PROJECT_DIR$/lib/tracks_swipe_page.dart" afterPath="$PROJECT_DIR$/lib/tracks_swipe_page.dart" />
       <change beforePath="$PROJECT_DIR$/test/data_model_test.dart" afterPath="$PROJECT_DIR$/test/data_model_test.dart" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -59,8 +51,18 @@
       <file leaf-file-name="data_base.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/data_base.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="154" column="65" lean-forward="false" selection-start-line="154" selection-start-column="65" selection-end-line="154" selection-end-column="65" />
+            <state relative-caret-position="518">
+              <caret line="157" column="3" lean-forward="true" selection-start-line="157" selection-start-column="3" selection-end-line="157" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="data_model_test.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/data_model_test.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="37" column="49" lean-forward="true" selection-start-line="37" selection-start-column="49" selection-end-line="37" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -86,11 +88,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="track_page.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="track_page.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/track_page.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
-              <caret line="108" column="42" lean-forward="true" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
+              <caret line="108" column="42" lean-forward="false" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -179,15 +181,15 @@
         <option value="$PROJECT_DIR$/lib/new_track_data_popup.dart" />
         <option value="$PROJECT_DIR$/lib/model/track.dart" />
         <option value="$PROJECT_DIR$/lib/model/indicator_settings.dart" />
-        <option value="$PROJECT_DIR$/test/data_model_test.dart" />
         <option value="$PROJECT_DIR$/lib/charts.dart" />
         <option value="$PROJECT_DIR$/lib/choice.dart" />
-        <option value="$PROJECT_DIR$/lib/data_base.dart" />
         <option value="$PROJECT_DIR$/lib/indicator_settings_popup.dart" />
         <option value="$PROJECT_DIR$/lib/TrackRefresher.dart" />
         <option value="$PROJECT_DIR$/lib/track_refresher.dart" />
         <option value="$PROJECT_DIR$/lib/track_page.dart" />
         <option value="$PROJECT_DIR$/lib/tracks_swipe_page.dart" />
+        <option value="$PROJECT_DIR$/lib/data_base.dart" />
+        <option value="$PROJECT_DIR$/test/data_model_test.dart" />
       </list>
     </option>
   </component>
@@ -309,7 +311,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Flutter.main.dart">
+  <component name="RunManager" selected="Flutter Test.tests in data_model_test.dart">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -343,6 +345,10 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
+    </configuration>
+    <configuration name="Indicator storage test" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testName" value="Indicator storage test" />
+      <option name="testFile" value="$PROJECT_DIR$/test/data_model_test.dart" />
     </configuration>
     <configuration name="tests in data_model_test.dart" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
       <option name="testFile" value="$PROJECT_DIR$/test/data_model_test.dart" />
@@ -405,17 +411,19 @@
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Flutter.main.dart" />
       <item index="1" class="java.lang.String" itemvalue="Flutter Test.tests in data_model_test.dart" />
       <item index="2" class="java.lang.String" itemvalue="Flutter Test.tests in widget_test.dart" />
       <item index="3" class="java.lang.String" itemvalue="Flutter Test.tests in hsluv_test.dart" />
+      <item index="4" class="java.lang.String" itemvalue="Flutter Test.Indicator storage test" />
     </list>
     <recent_temporary>
-      <list size="3">
+      <list size="4">
         <item index="0" class="java.lang.String" itemvalue="Flutter Test.tests in data_model_test.dart" />
-        <item index="1" class="java.lang.String" itemvalue="Flutter Test.tests in hsluv_test.dart" />
-        <item index="2" class="java.lang.String" itemvalue="Flutter Test.tests in widget_test.dart" />
+        <item index="1" class="java.lang.String" itemvalue="Flutter Test.Indicator storage test" />
+        <item index="2" class="java.lang.String" itemvalue="Flutter Test.tests in hsluv_test.dart" />
+        <item index="3" class="java.lang.String" itemvalue="Flutter Test.tests in widget_test.dart" />
       </list>
     </recent_temporary>
   </component>
@@ -436,20 +444,8 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="tests_in_data_model_test_dart - 2018.09.09 at 20h 40m 55s.xml">
-      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
-    </history-entry>
-    <history-entry file="tests_in_data_model_test_dart - 2018.09.09 at 20h 42m 14s.xml">
-      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
-    </history-entry>
-    <history-entry file="tests_in_data_model_test_dart - 2018.09.09 at 20h 44m 45s.xml">
-      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
-    </history-entry>
-    <history-entry file="tests_in_data_model_test_dart - 2018.09.09 at 20h 46m 15s.xml">
-      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
-    </history-entry>
-    <history-entry file="tests_in_data_model_test_dart - 2018.09.09 at 20h 49m 35s.xml">
-      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
+    <history-entry file="Indicator_storage_test - 2018.09.12 at 02h 04m 42s.xml">
+      <configuration name="Indicator storage test" configurationId="FlutterTestConfigType" />
     </history-entry>
     <history-entry file="tests_in_data_model_test_dart - 2018.09.09 at 20h 49m 57s.xml">
       <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
@@ -458,6 +454,18 @@
       <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
     </history-entry>
     <history-entry file="tests_in_data_model_test_dart - 2018.09.09 at 21h 01m 04s.xml">
+      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
+    </history-entry>
+    <history-entry file="tests_in_data_model_test_dart - 2018.09.12 at 02h 02m 45s.xml">
+      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
+    </history-entry>
+    <history-entry file="tests_in_data_model_test_dart - 2018.09.12 at 02h 03m 07s.xml">
+      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
+    </history-entry>
+    <history-entry file="tests_in_data_model_test_dart - 2018.09.12 at 02h 04m 59s.xml">
+      <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
+    </history-entry>
+    <history-entry file="tests_in_data_model_test_dart - 2018.09.12 at 02h 05m 23s.xml">
       <configuration name="tests in data_model_test.dart" configurationId="FlutterTestConfigType" />
     </history-entry>
     <history-entry file="tests_in_hsluv_test_dart - 2018.09.03 at 00h 38m 03s.xml">
@@ -479,7 +487,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Dart Analysis" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34537247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34537247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Flutter Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -492,7 +500,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43792325" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43792325" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Flutter Inspector" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -564,7 +572,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="109" />
+      <option name="time" value="111" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="FlutterRunConfigurationType">
@@ -878,14 +886,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/data_model_test.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="14" column="63" lean-forward="false" selection-start-line="14" selection-start-column="63" selection-end-line="14" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/model/indicator_settings.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
@@ -986,18 +986,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/data_base.dart">
+    <entry file="file://$PROJECT_DIR$/lib/track_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="154" column="65" lean-forward="false" selection-start-line="154" selection-start-column="65" selection-end-line="154" selection-end-column="65" />
+        <state relative-caret-position="187">
+          <caret line="108" column="42" lean-forward="false" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/track_page.dart">
+    <entry file="file://$PROJECT_DIR$/lib/data_base.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="108" column="42" lean-forward="true" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
+        <state relative-caret-position="518">
+          <caret line="157" column="3" lean-forward="true" selection-start-line="157" selection-start-column="3" selection-end-line="157" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/data_model_test.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="37" column="49" lean-forward="true" selection-start-line="37" selection-start-column="49" selection-end-line="37" selection-end-column="49" />
           <folding />
         </state>
       </provider>

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bismuth/data_base.dart';
 import 'package:bismuth/model/group.dart';
+import 'package:bismuth/model/indicator_settings.dart';
 import 'package:bismuth/model/track.dart';
 import 'package:bismuth/model/track_data.dart';
 
@@ -26,6 +27,15 @@ void main() {
     Group decodedg1 = Group.fromJson(json.decode(group1));
     expect(decodedg1.name, g1.name);
     expect(decodedg1.order, g1.order);
+  });
+
+  test("Indicator storage test", () async {
+    final db = await BismuthDbConnection.openConnection();
+    final is1 = new IndicatorSettings(showMovingAvg: true, movingAvgDays: 2);
+    await db.updateIndicator(is1);
+    final isE = await db.getIndicator();
+    expect(is1.showMovingAvg, isE.showMovingAvg);
+    expect(is1.movingAvgDays, isE.movingAvgDays);
   });
 
   test("Data storage and retrieval of groups", () async {
