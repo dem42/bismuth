@@ -19,7 +19,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
   }
 
   factory SimpleTimeSeriesChart.fromData(List<TrackData> trackData, {IndicatorSettings indicatorSettings}) {
-    final data = trackData.map((td) => new TDSeries(DateTime.parse(td.time), td.value)).toList();
+    final data = trackData.map((td) => new TDSeries(td.datetime, td.value)).toList();
 
     final series = [
       new charts.Series(

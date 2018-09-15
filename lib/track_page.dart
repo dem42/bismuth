@@ -71,7 +71,7 @@ class TrackPageState extends State<TrackPage> {
               child: new Container(
                   width: windowSize.width * _LIST_HEIGHT_PROPORTION,
                   child: new TrackDataListView(
-                    trackData: track.trackData,
+                    trackData: _reverseSorted(track.trackData),
                     headerTextStyle: headerTextStyle,
                     onDelete: _deleteTrackData,
                   )))
@@ -105,7 +105,7 @@ class TrackPageState extends State<TrackPage> {
     dbConnection.removeTrackData(trackData);
   }
 
-  _colorFromGroup(Group group) {
+  Color _colorFromGroup(Group group) {
     var offset = (group.order * 40) % 320;
     var rgb = HUSLColorConverter.hsluvToRgb([offset, 100, 87.6]);
     return Color.fromARGB(60, (255 * rgb[0]).round(), (255 * rgb[1]).round(), (255 * rgb[2]).round());
@@ -115,6 +115,12 @@ class TrackPageState extends State<TrackPage> {
     setState(() {
       this.indicatorSettings = indicatorSettings;
     });
+  }
+
+  List<TrackData> _reverseSorted(List<TrackData> trackData) {
+    List<TrackData> sorted = List.of(trackData, growable: false);
+    sorted.sort((t1, t2) => t2.datetime.compareTo(t1.datetime));
+    return sorted;
   }
 }
 
