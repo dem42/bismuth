@@ -1,5 +1,6 @@
 import 'package:bismuth/model/group.dart';
 import 'package:bismuth/model/indicator_settings.dart';
+import 'package:bismuth/fade_transition_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -74,7 +75,7 @@ class IndicatorSettingsPageState extends State<IndicatorSettingsPage> {
 }
 
 MaterialPageRoute<void> createIndicatorSettingsRoute(IndicatorSettings settings, OnIndicatorSettingsUpdate handler) {
-  return new MaterialPageRoute<void>(builder: (BuildContext context) {
+  return new FadeTransitionRoute<void>(builder: (BuildContext context) {
     return new IndicatorSettingsPage(indicatorSettings: settings, handler: handler);
   });
 }

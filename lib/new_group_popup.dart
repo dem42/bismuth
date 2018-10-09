@@ -1,5 +1,5 @@
 import 'package:bismuth/model/group.dart';
-import 'package:bismuth/no-transition-route.dart';
+import 'package:bismuth/fade_transition_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -37,7 +37,7 @@ class NewGroupPage extends StatelessWidget {
 }
 
 MaterialPageRoute<void> createSaveGroupRoute(OnGroupSaveHandler groupHandler) {
-  return new NoTransitionRoute<void>(builder: (BuildContext context) {
+  return new FadeTransitionRoute<void>(builder: (BuildContext context) {
     return new NewGroupPage(groupHandler: groupHandler);
   });
 }
