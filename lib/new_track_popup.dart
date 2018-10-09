@@ -1,5 +1,6 @@
 import 'package:bismuth/model/group.dart';
 import 'package:bismuth/model/track.dart';
+import 'package:bismuth/no-transition-route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -69,7 +70,7 @@ class NewTrackPageState extends State<NewTrackPage> {
 }
 
 MaterialPageRoute<void> createSaveTrackRoute(List<Group> groups, OnTrackSaveHandler trackHandler) {
-  return new MaterialPageRoute<void>(builder: (BuildContext context) {
+  return new NoTransitionRoute<void>(builder: (BuildContext context) {
     return new NewTrackPage(groups: groups, trackHandler: trackHandler);
   });
 }

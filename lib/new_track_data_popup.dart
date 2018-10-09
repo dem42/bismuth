@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bismuth/model/track.dart';
 import 'package:bismuth/model/track_data.dart';
+import 'package:bismuth/no-transition-route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -55,7 +56,7 @@ class NewTrackDataPageState extends State<NewTrackDataPage> {
 }
 
 MaterialPageRoute<void> createSaveTrackDataRoute(Track currentTrack, OnTrackDataSaveHandler trackDataHandler) {
-  return new MaterialPageRoute<void>(builder: (BuildContext context) {
+  return new NoTransitionRoute<void>(builder: (BuildContext context) {
     return new NewTrackDataPage(currentTrack, trackDataHandler);
   });
 }
